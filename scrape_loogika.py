@@ -1,23 +1,32 @@
 import requests
 from bs4 import BeautifulSoup
-
-#Leiab toote hinna
-def hind(url):
-    
-    headers = {
-        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0", 
-        "Accept-Language": "en-US,en;q=0.5"
+import html5lib
+headers = {
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36", 
+        "Accept-Language": "en-US,en;q=0.9"
     }
+
+url = "https://www.amazon.com/PlayStation-Console-Marvels-Spider-Man-Bundle-5/dp/B0CKZGY5B6/ref=sr_1_2?crid=1LIKSAPQ5C0UY&keywords=ps5&qid=1700577150&sprefix=%2Caps%2C269&sr=8-2"
+html_sisu = requests.get(url, headers= headers)
+soup = BeautifulSoup(html_sisu.text, "html5lib")
     
-    html_sisu = requests.get(url, headers)
-    soup = BeautifulSoup(html_sisu.text, "lxml")
+#Leiab toote hinna
+def hind(url, html_sisu, soup):
     
-    hind = soup.select_one("span.a-price-whole.#text")
-    
+    hind = soup.find(attrs={"a-offscreen"}).get_text()
+      
     if hind:
-        return f"Hind: {hind.text.strip()} "
+        return hind.strip()
     else:
         return "Hinda ei leitud"
+
+def nimi(url, html_sisu, soup):
+    nimi = soup.find(id = "productTitle").get_text()
+    
+    return nimi.strip()
+    
+    
+    
     
 
 '''
@@ -29,15 +38,16 @@ def otsing():
     tooted[nimi] = url_teisendus
 '''
 '''
-def nimi(url):
+
     
 '''
 
 
     
     
-print(hind("https://www.amazon.com/LKV-Womens-Winter-Casual-Christmas/dp/B0CB45ZFY3/ref=sr_1_24?crid=Y6I1E8KZNFCA&keywords=christmas%2Bgift&qid=1700512236&sprefix=christmas%2Bgift%2Caps%2C225&sr=8-24&th=1&psc=1"))
-    
+print(hind(url, html_sisu, soup))
+print(nimi(url, html_sisu, soup))
+
     
     
     
