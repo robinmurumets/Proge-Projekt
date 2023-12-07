@@ -28,3 +28,20 @@ def nimi(url, html_sisu, soup):
     return nimi.strip()
     
     
+def toote_url(toode):
+    amazon_url = f"https://www.amazon.com/s?k={toode}"
+
+    html_sisu, soup = fetch_html_sisu_ja_soup(amazon_url)
+
+    
+    lingid = []
+    for product_div in soup.find_all("div", class_="a-section a-spacing-none puis-padding-right-small s-title-instructions-style"):
+        link = product_div.find("a", class_="a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal")
+        if link:
+            lingid.append(f"https://www.amazon.com{link['href']}")
+
+    return lingid
+
+
+
+
