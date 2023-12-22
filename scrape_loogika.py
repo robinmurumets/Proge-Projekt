@@ -4,6 +4,12 @@ import lxml
 from datetime import datetime
 import csv
 
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+    "Accept-Language": "en-US,en;q=0.9"
+}
+
 def fetch_html_sisu_ja_soup(url):
     session = requests.Session()
     html_sisu = session.get(url, headers=headers)
@@ -58,8 +64,8 @@ def pildi_url(url, html_sisu, soup):
 
 def salvesta_andmed(toote_nimi, hind, transport_hind, ajatempel):
     with open('toote_ajalugu.csv', mode='a', newline='', encoding='utf-8') as fail:
-        kirjutaja = csv.writer(fail)
-        kirjutaja.writerow([toote_nimi, hind, transport_hind, ajatempel])
+        writer = csv.writer(fail)
+        writer.writerow([toote_nimi, hind, transport_hind, ajatempel])
 
 
 print(toote_url("https://www.amazon.com/s?k=versace"))
